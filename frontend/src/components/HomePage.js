@@ -7,6 +7,14 @@ const API_BASE_URL = process.env.NODE_ENV === 'development'
   ? 'http://localhost:8000' 
   : '';
 
+const getAssetPath = (path) => {
+  if (process.env.NODE_ENV === 'development') {
+    return path; // In development, files are served from root
+  } else {
+    return `/static${path}`; // In production, files are served from /static/
+  }
+};
+
 function HomePage({ onStartMonitoring }) {
   const [focusDescription, setFocusDescription] = useState(
     "I'm trying to stay focused on writing an essay, but I keep getting distracted by watching cat videos. I also want to stay off of Hacker News and Reddit"
@@ -52,7 +60,7 @@ function HomePage({ onStartMonitoring }) {
         
         <div className="infographic-container">
           <img 
-            src="/infographic.png" 
+            src={getAssetPath("/infographic.png")} 
             alt="How Screenshock.me works" 
             className="infographic"
           />
