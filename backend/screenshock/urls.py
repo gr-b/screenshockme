@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from django.conf import settings
-from django.conf.urls.static import static
 import os
 
 urlpatterns = [
@@ -26,10 +25,17 @@ urlpatterns = [
     path('api/', include('api.urls')),
 ]
 
-# Serve static files (in development and production)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Force serve static files in both development and production
+# This is needed because we don't have nginx in front of Django
+from django.views.static import serve
+from django.urls import re_path
 
-# Also serve files from STATICFILES_DIRS in development
+# Override Django's static() to work in production
+urlpatterns += [
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+]
+
+# Also serve files from STATICFILES_DIRS in development  
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns()
