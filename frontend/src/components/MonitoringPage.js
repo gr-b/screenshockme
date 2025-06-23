@@ -46,7 +46,7 @@ function MonitoringPage({ config, onStopMonitoring }) {
     gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
     
     oscillator.start(ctx.currentTime);
-    oscillator.stop(ctx.currentTime + 0.5);
+    oscillator.stop(ctx.currentTime + 1);
   }, []);
 
   // Initialize screen capture once on component mount
@@ -148,7 +148,7 @@ function MonitoringPage({ config, onStopMonitoring }) {
         
         // Show stimulus modal
         setShowStimulusModal(true);
-        setTimeout(() => setShowStimulusModal(false), 250);
+        setTimeout(() => setShowStimulusModal(false), 750);
         
         // Reset the timer
         setDuration(0);
