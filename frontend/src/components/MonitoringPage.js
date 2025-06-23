@@ -89,11 +89,11 @@ function MonitoringPage({ config, onStopMonitoring }) {
     try {
       const video = videoRef.current;
       const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      canvas.width = 500;
+      canvas.height = 500;
       
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0);
+      ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, 500, 500);
       
       return new Promise((resolve) => {
         canvas.toBlob((blob) => {
