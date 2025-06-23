@@ -130,11 +130,6 @@ function MonitoringPage({ config, onStopMonitoring }) {
         })
       });
 
-      // Only proceed if this is still the current request
-      if (currentRequest !== requestTime) return;
-
-      setCurrentRequest(null);
-
       const data = await response.json();
       
       // Add to debug history
@@ -163,7 +158,7 @@ function MonitoringPage({ config, onStopMonitoring }) {
       console.error('Monitor request failed:', error);
       setCurrentRequest(null);
     }
-  }, [config, currentRequest, playBeep]);
+  }, [config, playBeep]);
 
   const monitoringLoop = useCallback(async () => {
     if (!isMonitoring) return;
