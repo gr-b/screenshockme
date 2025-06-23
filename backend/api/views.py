@@ -1,6 +1,7 @@
 import json
 import base64
 import requests
+import httpx
 import logging
 import time
 from django.http import JsonResponse
@@ -58,7 +59,7 @@ async def monitor_screen(request):
                 pavlok_type = stimulus_type.replace('pavlok_', '')
                 if pavlok_type == 'vibe':
                     pavlok_type = 'vibrate'
-                stimulus_result = send_pavlok_stimulus(pavlok_token, pavlok_type)
+                stimulus_result = await send_pavlok_stimulus(pavlok_token, pavlok_type)
                 logger.info(f"Pavlok stimulus result: {stimulus_result.get('success', False)}")
             elif stimulus_type == 'beep-laptop':
                 logger.info("Laptop beep stimulus requested - handled by frontend")
@@ -105,7 +106,7 @@ async def analyze_focus_with_baml(base64_image, focus_description):
         logger.error(f"BAML analysis error: {e}", exc_info=True)
         raise
 
-def send_pavlok_stimulus(pavlok_token, stimulus_type='zap', intensity=50):
+async def send_pavlok_stimulus(pavlok_token, stimulus_type='zap', intensity=50):
     """
     Send stimulus to Pavlok device
     """
@@ -134,8 +135,9 @@ def send_pavlok_stimulus(pavlok_token, stimulus_type='zap', intensity=50):
             }
         }
         
-        response = requests.post(url, headers=headers, json=data, timeout=10)
-        response.raise_for_status()
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, headers=headers, json=data, timeout=10)
+            response.raise_for_status()
         
         pavlok_time = time.time() - start_time
         logger.info(f"Pavlok API call successful in {pavlok_time:.3f}s")
