@@ -221,10 +221,30 @@ This makes everything more complicated, and fucks up all the state.
 # ADDTIONAL FRONTEND STYLE NOTE
 Make sure everything is aesthetically pleasing, but a bit eclectic. Wherever possible, insert lucide icons, if they are appropriate.
 
+# PYTHON ENVIRONMENT MANAGEMENT
+Use `uv` for Python environment management instead of pip/virtualenv:
+- All Python dependencies are managed in `pyproject.toml`
+- Use `uv sync` to install dependencies
+- Use `uv run` to execute Python commands
+- Lock file (`uv.lock`) ensures reproducible builds
+
 # DEPLOYMENT AND DOCKER
-Screenshock.me will be deployed as a single container. 
-It will have a single Dockerfile that both builds the static files, and then serves them in the Django server.
-In development, we will run the frontend server on the default port :3000
-But in production, no frontend development server will be running, so we'll have to have / endpoint in the django server serve the built static files.
-That way we only need to run one process in production. 
-But, this means we should set API_BASE_URL to, if we are in development, use localhost with the port of the Django server. While in production, we should use the current window.location. We can't just use window.location in development, because that would send API requests to localhost:3000 rather than the port the Django server is running on.
+Screenshock.me will be deployed as a single container using uv for Python environment management:
+- Single Dockerfile that builds React static files and serves them via Django
+- Uses `uv` for fast, reliable Python dependency management
+- In development: frontend server on :3000, backend on :8000
+- In production: single process serves both frontend and API endpoints
+- API_BASE_URL configuration handles development vs production routing
+
+Development workflow:
+- Frontend: `npm start` (serves on :3000)
+- Backend: `uv run python manage.py runserver 8000`
+- Frontend proxies API requests to backend
+
+Production deployment:
+- Docker builds frontend static files
+- uv installs Python dependencies efficiently
+- Single container serves everything on port 8000
+- Nginx reverse proxy optional for load balancing
+
+# Finally, when you are done, create a README.md which explains what this is, how it works, how to run things for the development workflow, and how things work in the production deploy.

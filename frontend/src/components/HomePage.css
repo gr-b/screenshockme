@@ -1,0 +1,237 @@
+.homepage {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.hero-section {
+  margin-bottom: 40px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.infographic-container {
+  margin: 30px 0;
+}
+
+.infographic {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.infographic:hover {
+  transform: scale(1.05);
+}
+
+.explanation {
+  margin: 40px 0;
+  text-align: left;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateX(10px);
+}
+
+.step-number {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.config-section {
+  background: rgba(255,255,255,0.1);
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 30px;
+}
+
+.focus-input {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.9);
+  resize: vertical;
+  min-height: 120px;
+  transition: all 0.3s ease;
+}
+
+.focus-input:focus {
+  outline: none;
+  background: rgba(255,255,255,1);
+  transform: scale(1.02);
+}
+
+.stimulus-config h3 {
+  margin-bottom: 15px;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.stimulus-select {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.9);
+  transition: all 0.3s ease;
+}
+
+.stimulus-select:focus {
+  outline: none;
+  background: rgba(255,255,255,1);
+}
+
+.pavlok-config {
+  margin-top: 20px;
+}
+
+.pavlok-token-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pavlok-input {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.9);
+  transition: all 0.3s ease;
+}
+
+.pavlok-input:focus {
+  outline: none;
+  background: rgba(255,255,255,1);
+}
+
+.help-button {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.help-button:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.1);
+}
+
+.start-button {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 30px auto;
+  transition: all 0.3s ease;
+  min-width: 200px;
+}
+
+.start-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.start-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.button-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: white;
+  font-size: 1.1rem;
+  margin-top: 30px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .homepage {
+    padding: 15px;
+  }
+  
+  .config-section {
+    padding: 20px;
+  }
+  
+  .step {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .step-number {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
