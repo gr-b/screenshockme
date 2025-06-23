@@ -4,6 +4,8 @@ import requests
 import httpx
 import logging
 import time
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -80,9 +82,9 @@ async def monitor_screen(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 
-async def analyze_focus_with_baml(base64_image, focus_description):
+def _analyze_focus_sync(base64_image, focus_description):
     """
-    Use BAML to analyze focus with Gemini
+    Synchronous BAML analysis function to run in thread pool
     """
     try:
         logger.debug("Starting BAML analysis")
@@ -91,8 +93,8 @@ async def analyze_focus_with_baml(base64_image, focus_description):
         # Create Image object from base64
         image = Image.from_base64("image/png", base64_image)
         
-        # Call BAML function (await for async execution)
-        result = await b.AnalyzeFocus(image, focus_description)
+        # Call BAML function
+        result = b.AnalyzeFocus(image, focus_description)
         
         analysis_time = time.time() - start_time
         logger.info(f"BAML analysis completed in {analysis_time:.3f}s")
@@ -105,6 +107,14 @@ async def analyze_focus_with_baml(base64_image, focus_description):
     except Exception as e:
         logger.error(f"BAML analysis error: {e}", exc_info=True)
         raise
+
+async def analyze_focus_with_baml(base64_image, focus_description):
+    """
+    Non-blocking wrapper for BAML analysis using thread pool
+    """
+    loop = asyncio.get_event_loop()
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        return await loop.run_in_executor(executor, _analyze_focus_sync, base64_image, focus_description)
 
 async def send_pavlok_stimulus(pavlok_token, stimulus_type='zap', intensity=50):
     """
