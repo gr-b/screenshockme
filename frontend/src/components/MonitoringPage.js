@@ -124,7 +124,8 @@ function MonitoringPage({ config, onStopMonitoring }) {
         body: JSON.stringify({
           base64_encoded_image: base64Image,
           focus_description: config.focusDescription,
-          pavlok_token: config.pavlokToken
+          pavlok_token: config.pavlokToken,
+          stimulus_type: config.stimulusType
         })
       });
 
