@@ -12,7 +12,9 @@ function HomePage({ onStartMonitoring }) {
     "I'm trying to stay focused on writing an essay, but I keep getting distracted by watching cat videos. I also want to stay off of Hacker News and Reddit"
   );
   const [stimulusType, setStimulusType] = useState('computer_beep');
-  const [pavlokToken, setPavlokToken] = useState('');
+  const [pavlokToken, setPavlokToken] = useState(() => {
+    return localStorage.getItem('pavlokToken') || '';
+  });
   const [showPavlokModal, setShowPavlokModal] = useState(false);
 
   const stimulusOptions = [
@@ -111,10 +113,14 @@ function HomePage({ onStartMonitoring }) {
             <div className="pavlok-config">
               <div className="pavlok-token-group">
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Enter your Pavlok API token"
                   value={pavlokToken}
-                  onChange={(e) => setPavlokToken(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setPavlokToken(value);
+                    localStorage.setItem('pavlokToken', value);
+                  }}
                   className="pavlok-input rainbow-border"
                 />
                 <button

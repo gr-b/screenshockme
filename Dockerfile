@@ -38,6 +38,9 @@ RUN uv sync --frozen --no-dev
 # Copy backend code
 COPY backend/ ./
 
+# Make run_server.sh executable
+RUN chmod +x run_server.sh
+
 # Copy built frontend from stage 1
 COPY --from=frontend-builder /app/frontend/build ./frontend/build
 
@@ -64,5 +67,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/api/monitor/ -X POST -H "Content-Type: application/json" -d '{"base64_encoded_image":"test","focus_description":"test"}' || exit 1
 
-# Run the application with daphne (production ASGI server)
-CMD ["uv", "run", "daphne", "-b", "0.0.0.0", "-p", "8000", "screenshock.asgi:application"]
+# Run the application using run_server.sh
+CMD ["./run_server.sh"]

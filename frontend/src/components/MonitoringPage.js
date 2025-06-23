@@ -9,7 +9,7 @@ const API_BASE_URL = process.env.NODE_ENV === 'development'
 function MonitoringPage({ config, onStopMonitoring }) {
   const [isMonitoring, setIsMonitoring] = useState(true);
   const [duration, setDuration] = useState(0);
-  const [debugExpanded, setDebugExpanded] = useState(false);
+  const [debugExpanded, setDebugExpanded] = useState(true);
   const [debugHistory, setDebugHistory] = useState([]);
   const [showStimulusModal, setShowStimulusModal] = useState(false);
   const [modalTimeoutId, setModalTimeoutId] = useState(null);
@@ -304,7 +304,7 @@ function MonitoringPage({ config, onStopMonitoring }) {
       <div className="debug-section">
         <button
           onClick={() => setDebugExpanded(!debugExpanded)}
-          className="debug-toggle"
+          className={`debug-toggle ${debugExpanded ? 'debug-toggle-expanded' : ''}`}
         >
           {debugExpanded ? <ChevronUp /> : <ChevronDown />}
           Debug Information ({debugHistory.length}/10)
