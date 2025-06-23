@@ -142,12 +142,10 @@ CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000']
 # Static files configuration
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# In production (Docker), static files are copied to /app/static/
+# In production (Docker), static files are copied directly to staticfiles/
 # In development, we look for frontend build
 if not DEBUG:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),  # Docker copied static files
-    ]
+    STATICFILES_DIRS = []
 else:
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR.parent, 'frontend', 'build', 'static'),
