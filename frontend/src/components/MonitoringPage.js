@@ -13,6 +13,7 @@ function MonitoringPage({ config, onStopMonitoring }) {
   const [debugHistory, setDebugHistory] = useState([]);
   const [lastStimulusTime, setLastStimulusTime] = useState(0);
   const [currentRequest, setCurrentRequest] = useState(null);
+  const [showStimulusModal, setShowStimulusModal] = useState(false);
 
   const intervalRef = useRef(null);
   const durationIntervalRef = useRef(null);
@@ -145,6 +146,10 @@ function MonitoringPage({ config, onStopMonitoring }) {
       if (data.negative_stimulus) {
         setLastStimulusTime(Date.now());
         
+        // Show stimulus modal
+        setShowStimulusModal(true);
+        setTimeout(() => setShowStimulusModal(false), 250);
+        
         // Reset the timer
         setDuration(0);
         startTimeRef.current = Date.now();
@@ -165,13 +170,13 @@ function MonitoringPage({ config, onStopMonitoring }) {
 
     const now = Date.now();
     
-    // Don't send request if less than 5 seconds since last stimulus
-    if (now - lastStimulusTime < 5000) {
+    // Don't send request if less than 1.5 seconds since last stimulus
+    if (now - lastStimulusTime < 1500) {
       return;
     }
 
-    // Don't send request if there's already one pending (unless it's been >5 seconds)
-    if (currentRequest && now - currentRequest < 5000) {
+    // Don't send request if there's already one pending (unless it's been >1.5 seconds)
+    if (currentRequest && now - currentRequest < 1500) {
       return;
     }
 
@@ -322,6 +327,17 @@ function MonitoringPage({ config, onStopMonitoring }) {
           </div>
         )}
       </div>
+
+      {/* Stimulus Modal */}
+      {showStimulusModal && (
+        <div className="stimulus-modal-overlay">
+          <div className="stimulus-modal">
+            <div className="stimulus-modal-content">
+              Stimulus triggered!
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
