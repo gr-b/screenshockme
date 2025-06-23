@@ -4,6 +4,8 @@
 
 Screenshock.me is a web application that helps you stay focused by monitoring your screen activity and delivering negative stimulus when you stray from your goals. Using AI-powered analysis, it can detect when you're browsing distracting websites or doing activities you want to avoid.
 
+![Screenshock.me Website](website.png)
+
 ## Features
 
 - 📸 **Real-time Screen Monitoring**: Captures screenshots every second while you work
