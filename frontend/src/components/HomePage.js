@@ -58,31 +58,7 @@ function HomePage({ onStartMonitoring }) {
           />
         </div>
 
-        <div className="explanation">
-          <div className="step">
-            <div className="step-number">1</div>
-            <div className="step-text">Describe what you are trying to focus on</div>
-          </div>
-          <div className="step">
-            <div className="step-number">2</div>
-            <div className="step-text">Describe what you might find yourself distracted by that you want to avoid</div>
-          </div>
-          <div className="step">
-            <div className="step-number">3</div>
-            <div className="step-text">Set negative stimulus to be delivered when your focus strays: zap, beep, or vibrate (zap and vibrate require Pavlok device)</div>
-          </div>
-          <div className="step">
-            <div className="step-number">4</div>
-            <div className="step-text">Share your screen (screenshock.me will ask for this like a video call)</div>
-          </div>
-          <div className="step">
-            <div className="step-number">5</div>
-            <div className="step-text">Get zapped if you stray from focus!</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="config-section">
+        <div className="config-section">
         <div className="input-group">
           <textarea
             className="focus-input rainbow-border"
@@ -145,7 +121,31 @@ function HomePage({ onStartMonitoring }) {
 
         <div className="footer">
           <Twitter size={20} />
-          <span>Follow me on X: @griffbish</span>
+          <span>Follow me on X: <a href="https://x.com/griffbish" target="_blank" rel="noopener noreferrer">@griffbish</a></span>
+        </div>
+      </div>
+
+        <div className="explanation">
+          <div className="step">
+            <div className="step-number">1</div>
+            <div className="step-text">Describe what you are trying to focus on</div>
+          </div>
+          <div className="step">
+            <div className="step-number">2</div>
+            <div className="step-text">Describe what you might find yourself distracted by that you want to avoid</div>
+          </div>
+          <div className="step">
+            <div className="step-number">3</div>
+            <div className="step-text">Set negative stimulus to be delivered when your focus strays: zap, beep, or vibrate (zap and vibrate require Pavlok device)</div>
+          </div>
+          <div className="step">
+            <div className="step-number">4</div>
+            <div className="step-text">Share your screen (screenshock.me will ask for this like a video call)</div>
+          </div>
+          <div className="step">
+            <div className="step-number">5</div>
+            <div className="step-text">Get zapped if you stray from focus!</div>
+          </div>
         </div>
       </div>
 
