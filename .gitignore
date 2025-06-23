@@ -7,3 +7,6 @@ backend/screenshock.log
 backend/baml_client.tmp
 /backend/.venv
 /backend/baml_client
+
+
+/backend/.env
