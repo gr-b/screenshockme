@@ -6,6 +6,7 @@ class FocusAnalysisResult {
     distraction_details string? @description("If distracted, what specific distraction was detected")
 }
 
+
 function AnalyzeFocus(
     screenshot: image,
     focus_description: string
