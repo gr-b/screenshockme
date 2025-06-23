@@ -133,10 +133,18 @@ CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = False
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000']
 
-# Static files for production
+# Static files configuration
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR.parent, 'frontend', 'build', 'static'),
-] if os.path.exists(os.path.join(BASE_DIR.parent, 'frontend', 'build')) else []
+
+# In production (Docker), static files are copied to /app/static/
+# In development, we look for frontend build
+if not DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),  # Docker copied static files
+    ]
+else:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR.parent, 'frontend', 'build', 'static'),
+    ] if os.path.exists(os.path.join(BASE_DIR.parent, 'frontend', 'build')) else []
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

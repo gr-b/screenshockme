@@ -233,7 +233,8 @@ Screenshock.me will be deployed as a single container using uv for Python enviro
 - Single Dockerfile that builds React static files and serves them via Django
 - Uses `uv` for fast, reliable Python dependency management
 - In development: frontend server on :3000, backend on :8000
-- In production: single process serves both frontend and API endpoints
+- In production: single Django process serves both frontend and API endpoints
+- NO NGINX - Django serves static files directly
 - API_BASE_URL configuration handles development vs production routing
 
 Development workflow:
@@ -242,9 +243,10 @@ Development workflow:
 - Frontend proxies API requests to backend
 
 Production deployment:
-- Docker builds frontend static files
+- Docker builds React static files into `/app/static/`
+- Django templates directory contains `index.html`
 - uv installs Python dependencies efficiently
 - Single container serves everything on port 8000
-- Nginx reverse proxy optional for load balancing
+- Django static file serving handles all assets
 
 # Finally, when you are done, create a README.md which explains what this is, how it works, how to run things for the development workflow, and how things work in the production deploy.

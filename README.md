@@ -43,9 +43,9 @@ The AI is designed to be:
 - **CORS Support**: Cross-origin requests for development
 
 ### Deployment
-- **Docker**: Containerized deployment
-- **Nginx**: Reverse proxy and static file serving
-- **Single Container**: Frontend and backend served together
+- **Docker**: Single container deployment
+- **Django Static Files**: Serves React build files and static assets
+- **Production Ready**: One container, one process, simple deployment
 
 ## Development Setup
 
@@ -130,20 +130,28 @@ Users provide their Pavlok API tokens through the UI - no server-side configurat
 
 ### Docker (Recommended)
 
-1. **Build and run with Docker Compose**:
+1. **Build and run single container**:
 ```bash
-# Basic deployment
-docker-compose up -d
+# Build the Docker image
+docker build -t screenshock .
 
-# With nginx reverse proxy
-docker-compose --profile production up -d
+# Run the container
+docker run -d \
+  -p 8000:8000 \
+  -e GEMINI_API_KEY=your-api-key \
+  -e SECRET_KEY=your-secret-key \
+  --name screenshock \
+  screenshock
 ```
 
-2. **Set environment variables**:
+2. **Or use environment file**:
 ```bash
 # Create .env file
 echo "GEMINI_API_KEY=your-api-key" > .env
 echo "SECRET_KEY=your-secret-key" >> .env
+
+# Run with environment file
+docker run -d -p 8000:8000 --env-file .env --name screenshock screenshock
 ```
 
 ### Manual Deployment

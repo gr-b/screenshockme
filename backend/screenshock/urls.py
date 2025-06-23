@@ -26,15 +26,15 @@ urlpatterns = [
     path('api/', include('api.urls')),
 ]
 
-# Serve React app in production
-if not settings.DEBUG:
-    # Serve React build files
-    urlpatterns += [
-        path('', TemplateView.as_view(template_name='index.html')),
-    ]
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-elif os.path.exists(os.path.join(settings.BASE_DIR.parent, 'frontend', 'build')):
-    # Serve React build files in development if build exists
-    urlpatterns += [
-        path('', TemplateView.as_view(template_name='index.html')),
-    ]
+# Serve React app and static files
+urlpatterns += [
+    path('', TemplateView.as_view(template_name='index.html')),
+]
+
+# Serve static files (in development and production)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Also serve files from STATICFILES_DIRS in development
+if settings.DEBUG:
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    urlpatterns += staticfiles_urlpatterns()

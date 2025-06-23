@@ -41,13 +41,15 @@ COPY backend/ ./
 # Copy built frontend from stage 1
 COPY --from=frontend-builder /app/frontend/build ./frontend/build
 
-# Create templates directory and copy index.html
+# Create templates directory and copy index.html for Django to serve
 RUN mkdir -p templates
-RUN cp frontend/build/index.html templates/
+RUN cp frontend/build/index.html templates/index.html
 
-# Copy static files
-RUN mkdir -p staticfiles
-RUN if [ -d "frontend/build/static" ]; then cp -r frontend/build/static/* staticfiles/; fi
+# Copy all static assets from React build
+RUN mkdir -p static/
+RUN if [ -d "frontend/build/static" ]; then cp -r frontend/build/static/* static/; fi
+# Copy any other assets from build root (favicon, manifest, etc.)
+RUN find frontend/build -maxdepth 1 -type f ! -name "index.html" -exec cp {} static/ \;
 
 # Generate BAML client
 RUN uv run python generate_baml.py
