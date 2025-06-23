@@ -24,11 +24,10 @@ function PavlokModal({ onClose }) {
           
           <h3>Getting your API Token:</h3>
           <ol>
-            <li>Go to <a href="https://pavlok.com" target="_blank" rel="noopener noreferrer">pavlok.com</a></li>
-            <li>Log into your Pavlok account</li>
-            <li>Navigate to your account settings or developer section</li>
+            <li>Go to <a href="https://pavlok.readme.io/reference/intro/getting-started" target="_blank" rel="noopener noreferrer">Pavlok's developer API documentation</a></li>
+            <li>Log into your Pavlok account (the one associated with your app, not the one you bought the wristband with)</li>
             <li>Generate or copy your API token</li>
-            <li>Paste it into the token field above</li>
+            <li>Paste it into the token field here</li>
           </ol>
           
           <div className="warning">

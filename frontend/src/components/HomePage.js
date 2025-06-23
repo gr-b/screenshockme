@@ -14,7 +14,6 @@ function HomePage({ onStartMonitoring }) {
   const [stimulusType, setStimulusType] = useState('computer_beep');
   const [pavlokToken, setPavlokToken] = useState('');
   const [showPavlokModal, setShowPavlokModal] = useState(false);
-  const [isCapturing, setIsCapturing] = useState(false);
 
   const stimulusOptions = [
     { value: 'computer_beep', label: 'loud beep (through your computer)' },
@@ -27,35 +26,19 @@ function HomePage({ onStartMonitoring }) {
     return type.startsWith('pavlok_');
   };
 
-  const handleStartMonitoring = async () => {
+  const handleStartMonitoring = () => {
     if (requiresPavlok(stimulusType) && !pavlokToken.trim()) {
       alert('Please enter your Pavlok token for device-based stimulus.');
       return;
     }
 
-    try {
-      setIsCapturing(true);
-      const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { mediaSource: 'screen' },
-        audio: false
-      });
+    const config = {
+      focusDescription,
+      stimulusType,
+      pavlokToken: requiresPavlok(stimulusType) ? pavlokToken : null
+    };
 
-      // Stop the stream immediately - we just needed permission
-      stream.getTracks().forEach(track => track.stop());
-
-      const config = {
-        focusDescription,
-        stimulusType,
-        pavlokToken: requiresPavlok(stimulusType) ? pavlokToken : null
-      };
-
-      onStartMonitoring(config);
-    } catch (error) {
-      console.error('Screen capture permission denied:', error);
-      alert('Screen capture permission is required for monitoring. Please allow screen sharing and try again.');
-    } finally {
-      setIsCapturing(false);
-    }
+    onStartMonitoring(config);
   };
 
   return (
@@ -148,20 +131,10 @@ function HomePage({ onStartMonitoring }) {
 
         <button
           onClick={handleStartMonitoring}
-          disabled={isCapturing}
           className="start-button rainbow-border"
         >
-          {isCapturing ? (
-            <>
-              <Monitor className="button-icon" />
-              Requesting screen access...
-            </>
-          ) : (
-            <>
-              <Eye className="button-icon" />
-              Start monitoring
-            </>
-          )}
+          <Eye className="button-icon" />
+          Start monitoring
         </button>
 
         <div className="footer">
