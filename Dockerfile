@@ -54,9 +54,6 @@ RUN if [ -d "frontend/build/static" ]; then cp -r frontend/build/static/* static
 # Copy any other assets from build root (favicon, manifest, etc.)
 RUN find frontend/build -maxdepth 1 -type f ! -name "index.html" -exec cp {} static/ \;
 
-# Generate BAML client
-RUN uv run python generate_baml.py
-
 # Collect static files
 RUN uv run python manage.py collectstatic --noinput
 
