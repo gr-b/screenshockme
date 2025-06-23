@@ -57,6 +57,8 @@ RUN find frontend/build -maxdepth 1 -type f ! -name "index.html" -exec cp {} sta
 # Collect static files
 RUN uv run python manage.py collectstatic --noinput
 
+RUN uv run baml-cli generate
+
 # Expose port
 EXPOSE 8000
 
