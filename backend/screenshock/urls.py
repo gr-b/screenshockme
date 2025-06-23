@@ -26,11 +26,6 @@ urlpatterns = [
     path('api/', include('api.urls')),
 ]
 
-# Serve React app and static files
-urlpatterns += [
-    path('', TemplateView.as_view(template_name='index.html')),
-]
-
 # Serve static files (in development and production)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
@@ -38,3 +33,8 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns()
+
+# Serve React app - this should be LAST to avoid catching static file requests
+urlpatterns += [
+    path('', TemplateView.as_view(template_name='index.html')),
+]
