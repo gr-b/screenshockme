@@ -25,6 +25,7 @@ function MonitoringPage({ config, onStopMonitoring }) {
   const audioContextRef = useRef(null);
 
   const playBeep = useCallback(() => {
+    console.log("PLAYING BEEP")
     if (!audioContextRef.current) {
       audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
     }

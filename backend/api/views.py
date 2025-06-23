@@ -48,7 +48,7 @@ async def monitor_screen(request):
         logger.debug("Using BAML for focus analysis")
         analysis_result = await analyze_focus_with_baml(base64_image, focus_description)
         
-        logger.info(f"Analysis result: negative_stimulus={analysis_result.get('negative_stimulus')}, confidence={analysis_result.get('confidence')}")
+        logger.info(f"Analysis result: negative_stimulus={analysis_result.get('negative_stimulus')}")
         
         # If negative stimulus is triggered, handle stimulus based on type
         if analysis_result.get('negative_stimulus'):
@@ -98,10 +98,7 @@ async def analyze_focus_with_baml(base64_image, focus_description):
         
         return {
             'negative_stimulus': result.negative_stimulus,
-            'analysis': result.analysis,
-            'confidence': result.confidence,
-            'distraction_details': result.distraction_details,
-            'timestamp': '2024-01-01T00:00:00Z'  # Current timestamp would be better
+            #'analysis': result.analysis,
         }
         
     except Exception as e:
