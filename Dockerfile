@@ -48,11 +48,11 @@ COPY --from=frontend-builder /app/frontend/build ./frontend/build
 RUN mkdir -p templates
 RUN cp frontend/build/index.html templates/index.html
 
-# Copy all static assets from React build
-RUN mkdir -p static/
-RUN if [ -d "frontend/build/static" ]; then cp -r frontend/build/static/* static/; fi
+# Copy all static assets from React build to staticfiles directory
+RUN mkdir -p staticfiles/
+RUN if [ -d "frontend/build/static" ]; then cp -r frontend/build/static/* staticfiles/; fi
 # Copy any other assets from build root (favicon, manifest, etc.)
-RUN find frontend/build -maxdepth 1 -type f ! -name "index.html" -exec cp {} static/ \;
+RUN find frontend/build -maxdepth 1 -type f ! -name "index.html" -exec cp {} staticfiles/ \;
 
 # Collect static files
 RUN uv run python manage.py collectstatic --noinput
