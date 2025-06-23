@@ -19,6 +19,7 @@ function MonitoringPage({ config, onStopMonitoring }) {
   const startTimeRef = useRef(Date.now());
   const streamRef = useRef(null);
   const videoRef = useRef(null);
+  const initializingRef = useRef(false);
 
   // Audio context for beep sounds
   const audioContextRef = useRef(null);
@@ -185,6 +186,9 @@ function MonitoringPage({ config, onStopMonitoring }) {
 
   // Initialize screen capture on mount
   React.useEffect(() => {
+    if (initializingRef.current) return;
+    initializingRef.current = true;
+    
     initializeScreenCapture();
     
     // Cleanup on unmount

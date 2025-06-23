@@ -3,3 +3,4 @@ frontend/node_modules
 /backend/baml_client/__pycache__
 /backend/screenshock/__pycache__
 backend/db.sqlite3
+backend/screenshock.log

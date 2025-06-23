@@ -73,6 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'screenshock.wsgi.application'
+ASGI_APPLICATION = 'screenshock.asgi.application'
 
 
 # Database
@@ -164,7 +165,7 @@ LOGGING = {
             'style': '{',
         },
         'json': {
-            'format': '{"level": "{levelname}", "time": "{asctime}", "module": "{module}", "message": "{message}"}',
+            'format': '{{"level": "{levelname}", "time": "{asctime}", "module": "{module}", "message": "{message}"}}',
             'style': '{',
         },
     },
