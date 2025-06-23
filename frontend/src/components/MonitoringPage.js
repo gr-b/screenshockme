@@ -232,6 +232,21 @@ function MonitoringPage({ config, onStopMonitoring }) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleStopMonitoring = () => {
+    // Stop the screen sharing stream
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    
+    // Clear intervals
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (durationIntervalRef.current) clearInterval(durationIntervalRef.current);
+    
+    // Call parent's stop handler
+    onStopMonitoring();
+  };
+
   return (
     <div className="monitoring-page">
       <div className="monitoring-header">
@@ -263,7 +278,7 @@ function MonitoringPage({ config, onStopMonitoring }) {
           </button>
 
           <button
-            onClick={onStopMonitoring}
+            onClick={handleStopMonitoring}
             className="stop-button"
           >
             <X className="button-icon" />
