@@ -1,12 +1,3 @@
-// BAML configuration for Screenshock.me focus analysis
-
-client<llm> GeminiFocus {
-    provider "google-ai"
-    options {
-        model "gemini-2.0-flash-exp"
-        api_key env.GEMINI_API_KEY
-    }
-}
 
 class FocusAnalysisResult {
     negative_stimulus bool @description("Whether the user has strayed from their focus and should receive negative stimulus")
@@ -15,11 +6,14 @@ class FocusAnalysisResult {
     distraction_details string? @description("If distracted, what specific distraction was detected")
 }
 
+
+
 function AnalyzeFocus(
     screenshot: image,
     focus_description: string
 ) -> FocusAnalysisResult {
-    client GeminiFocus
+    client "google-ai/gemini-2.5-flash-lite-preview-06-17" // gemini-2.5-flash // gemini-2.5-flash-lite-preview-06-17
+    
     prompt #"
         You are a focus monitoring AI for Screenshock.me. Your job is to determine if a user has strayed from their stated focus goals based on a screenshot of their current activity.
 
