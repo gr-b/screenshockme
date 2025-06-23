@@ -121,6 +121,10 @@ async def send_pavlok_stimulus(pavlok_token, stimulus_type='zap', intensity=50):
     Send stimulus to Pavlok device
     """
     try:
+        # Set intensity to 10 for zap stimulus
+        if stimulus_type == 'zap':
+            intensity = 10
+            
         logger.info(f"Sending Pavlok stimulus: type={stimulus_type}, intensity={intensity}")
         start_time = time.time()
         
