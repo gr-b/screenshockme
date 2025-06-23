@@ -46,36 +46,61 @@ function MonitoringPage({ config, onStopMonitoring }) {
     oscillator.stop(ctx.currentTime + 0.5);
   }, []);
 
-  const captureScreen = useCallback(async () => {
+  // Initialize screen capture once on component mount
+  const initializeScreenCapture = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: { mediaSource: 'screen' },
         audio: false
       });
 
+      streamRef.current = stream;
+      
+      // Create video element for capturing frames
       const video = document.createElement('video');
       video.srcObject = stream;
+      video.muted = true;
       video.play();
+      videoRef.current = video;
 
+      // Handle stream ending (user stops sharing)
+      stream.getVideoTracks()[0].addEventListener('ended', () => {
+        console.log('Screen sharing ended by user');
+        onStopMonitoring();
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Failed to initialize screen capture:', error);
+      alert('Screen capture permission is required for monitoring. Please allow screen sharing and try again.');
+      onStopMonitoring();
+      return false;
+    }
+  }, [onStopMonitoring]);
+
+  const captureScreen = useCallback(async () => {
+    if (!videoRef.current || !streamRef.current) {
+      console.error('Screen capture not initialized');
+      return null;
+    }
+
+    try {
+      const video = videoRef.current;
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0);
+      
       return new Promise((resolve) => {
-        video.onloadedmetadata = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(video, 0, 0);
-          
-          stream.getTracks().forEach(track => track.stop());
-          
-          canvas.toBlob((blob) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              resolve(reader.result.split(',')[1]); // Remove data:image/png;base64, prefix
-            };
-            reader.readAsDataURL(blob);
-          }, 'image/png');
-        };
+        canvas.toBlob((blob) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            resolve(reader.result.split(',')[1]); // Remove data:image/png;base64, prefix
+          };
+          reader.readAsDataURL(blob);
+        }, 'image/png');
       });
     } catch (error) {
       console.error('Failed to capture screen:', error);
@@ -157,6 +182,20 @@ function MonitoringPage({ config, onStopMonitoring }) {
       await sendMonitorRequest(screenshot);
     }
   }, [isMonitoring, lastStimulusTime, currentRequest, captureScreen, sendMonitorRequest]);
+
+  // Initialize screen capture on mount
+  React.useEffect(() => {
+    initializeScreenCapture();
+    
+    // Cleanup on unmount
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (durationIntervalRef.current) clearInterval(durationIntervalRef.current);
+    };
+  }, [initializeScreenCapture]);
 
   // Start monitoring loop
   React.useEffect(() => {
