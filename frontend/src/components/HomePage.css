@@ -40,36 +40,44 @@
 .step {
   display: flex;
   align-items: center;
-  margin: 20px 0;
-  padding: 15px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-  backdrop-filter: blur(10px);
+  margin: 25px 0;
+  padding: 20px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 15px;
+  backdrop-filter: blur(15px);
   transition: all 0.3s ease;
+  border: 2px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
 .step:hover {
-  background: rgba(255,255,255,0.2);
-  transform: translateX(10px);
+  background: rgba(255,255,255,0.25);
+  transform: translateX(10px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.3);
 }
 
 .step-number {
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  margin-right: 20px;
+  font-size: 1.3rem;
+  margin-right: 25px;
   flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .step-text {
-  font-size: 1.1rem;
-  line-height: 1.4;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
 
 .config-section {
@@ -146,22 +154,26 @@
 }
 
 .help-button {
-  background: rgba(255,255,255,0.2);
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
   color: white;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  border: 3px solid rgba(255,255,255,0.3);
 }
 
 .help-button:hover {
-  background: rgba(255,255,255,0.3);
-  transform: scale(1.1);
+  background: linear-gradient(45deg, #ff5252, #26c6da);
+  transform: scale(1.15);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  border: 3px solid rgba(255,255,255,0.5);
 }
 
 .start-button {

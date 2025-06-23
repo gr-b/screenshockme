@@ -139,7 +139,7 @@ function HomePage({ onStartMonitoring }) {
                   className="help-button"
                   title="What is Pavlok?"
                 >
-                  <HelpCircle size={20} />
+                  <HelpCircle size={28} />
                 </button>
               </div>
             </div>

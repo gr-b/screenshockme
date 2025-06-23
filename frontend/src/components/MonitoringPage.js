@@ -17,6 +17,8 @@ function MonitoringPage({ config, onStopMonitoring }) {
   const intervalRef = useRef(null);
   const durationIntervalRef = useRef(null);
   const startTimeRef = useRef(Date.now());
+  const streamRef = useRef(null);
+  const videoRef = useRef(null);
 
   // Audio context for beep sounds
   const audioContextRef = useRef(null);
