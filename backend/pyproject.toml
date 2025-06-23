@@ -54,6 +54,9 @@ profile = "black"
 multi_line_output = 3
 line_length = 88
 
+[tool.hatch.build.targets.wheel]
+packages = ["screenshock", "api", "baml_client"]
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "screenshock.settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]

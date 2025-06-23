@@ -1,1 +1,5 @@
 frontend/node_modules
+/backend/api/__pycache__
+/backend/baml_client/__pycache__
+/backend/screenshock/__pycache__
+backend/db.sqlite3
