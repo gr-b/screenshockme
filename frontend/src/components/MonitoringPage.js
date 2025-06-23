@@ -11,9 +11,9 @@ function MonitoringPage({ config, onStopMonitoring }) {
   const [duration, setDuration] = useState(0);
   const [debugExpanded, setDebugExpanded] = useState(false);
   const [debugHistory, setDebugHistory] = useState([]);
-  const [lastStimulusTime, setLastStimulusTime] = useState(0);
-  const [currentRequest, setCurrentRequest] = useState(null);
   const [showStimulusModal, setShowStimulusModal] = useState(false);
+  const [modalTimeoutId, setModalTimeoutId] = useState(null);
+  const [beepIntervalId, setBeepIntervalId] = useState(null);
 
   const intervalRef = useRef(null);
   const durationIntervalRef = useRef(null);
@@ -115,8 +115,6 @@ function MonitoringPage({ config, onStopMonitoring }) {
     if (!base64Image) return;
 
     try {
-      const requestTime = Date.now();
-      setCurrentRequest(requestTime);
 
       const response = await fetch(`${API_BASE_URL}/api/monitor/`, {
         method: 'POST',
@@ -144,47 +142,55 @@ function MonitoringPage({ config, onStopMonitoring }) {
       setDebugHistory(prev => [debugEntry, ...prev.slice(0, 9)]);
 
       if (data.negative_stimulus) {
-        setLastStimulusTime(Date.now());
         
-        // Show stimulus modal
+        // Clear any existing modal timeout
+        if (modalTimeoutId) {
+          clearTimeout(modalTimeoutId);
+        }
+        
+        // Show stimulus modal and set new timeout
         setShowStimulusModal(true);
-        setTimeout(() => setShowStimulusModal(false), 750);
+        const newTimeoutId = setTimeout(() => setShowStimulusModal(false), 750);
+        setModalTimeoutId(newTimeoutId);
         
         // Reset the timer
         setDuration(0);
         startTimeRef.current = Date.now();
         
-        // Play computer beep if selected
+        // Handle computer beep stimulus
         if (config.stimulusType === 'computer_beep') {
+          // Clear any existing beep interval
+          if (beepIntervalId) {
+            clearInterval(beepIntervalId);
+          }
+          
+          // Play immediate beep
           playBeep();
+          
+          // Start sustained beeping every 500ms
+          const newBeepInterval = setInterval(playBeep, 500);
+          setBeepIntervalId(newBeepInterval);
+          
+          // Stop sustained beeping after 750ms
+          setTimeout(() => {
+            clearInterval(newBeepInterval);
+            setBeepIntervalId(null);
+          }, 750);
         }
       }
     } catch (error) {
       console.error('Monitor request failed:', error);
-      setCurrentRequest(null);
     }
   }, [config, playBeep]);
 
   const monitoringLoop = useCallback(async () => {
     if (!isMonitoring) return;
 
-    const now = Date.now();
-    
-    // Don't send request if less than 1.5 seconds since last stimulus
-    if (now - lastStimulusTime < 1500) {
-      return;
-    }
-
-    // Don't send request if there's already one pending (unless it's been >1.5 seconds)
-    if (currentRequest && now - currentRequest < 1500) {
-      return;
-    }
-
     const screenshot = await captureScreen();
     if (screenshot) {
       await sendMonitorRequest(screenshot);
     }
-  }, [isMonitoring, lastStimulusTime, currentRequest, captureScreen, sendMonitorRequest]);
+  }, [isMonitoring, captureScreen, sendMonitorRequest]);
 
   // Initialize screen capture on mount
   React.useEffect(() => {
@@ -200,13 +206,15 @@ function MonitoringPage({ config, onStopMonitoring }) {
       }
       if (intervalRef.current) clearInterval(intervalRef.current);
       if (durationIntervalRef.current) clearInterval(durationIntervalRef.current);
+      if (modalTimeoutId) clearTimeout(modalTimeoutId);
+      if (beepIntervalId) clearInterval(beepIntervalId);
     };
   }, [initializeScreenCapture]);
 
   // Start monitoring loop
   React.useEffect(() => {
     if (isMonitoring) {
-      intervalRef.current = setInterval(monitoringLoop, 1000);
+      intervalRef.current = setInterval(monitoringLoop, 500);
       durationIntervalRef.current = setInterval(() => {
         setDuration(Math.floor((Date.now() - startTimeRef.current) / 1000));
       }, 1000);
@@ -218,6 +226,8 @@ function MonitoringPage({ config, onStopMonitoring }) {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
       if (durationIntervalRef.current) clearInterval(durationIntervalRef.current);
+      if (modalTimeoutId) clearTimeout(modalTimeoutId);
+      if (beepIntervalId) clearInterval(beepIntervalId);
     };
   }, [isMonitoring, monitoringLoop]);
 
@@ -241,9 +251,11 @@ function MonitoringPage({ config, onStopMonitoring }) {
       streamRef.current = null;
     }
     
-    // Clear intervals
+    // Clear intervals and timeouts
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (durationIntervalRef.current) clearInterval(durationIntervalRef.current);
+    if (modalTimeoutId) clearTimeout(modalTimeoutId);
+    if (beepIntervalId) clearInterval(beepIntervalId);
     
     // Call parent's stop handler
     onStopMonitoring();

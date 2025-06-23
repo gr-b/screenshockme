@@ -90,8 +90,8 @@ async def analyze_focus_with_baml(base64_image, focus_description):
         # Create Image object from base64
         image = Image.from_base64("image/png", base64_image)
         
-        # Call BAML function
-        result = b.AnalyzeFocus(image, focus_description)
+        # Call BAML function (await for async execution)
+        result = await b.AnalyzeFocus(image, focus_description)
         
         analysis_time = time.time() - start_time
         logger.info(f"BAML analysis completed in {analysis_time:.3f}s")
