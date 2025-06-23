@@ -1,9 +1,9 @@
 
 class FocusAnalysisResult {
     negative_stimulus bool @description("Whether the user has strayed from their focus and should receive negative stimulus")
-    analysis string @description("Detailed analysis of what the user is doing in the screenshot")
-    confidence float @description("Confidence level of the analysis (0.0 to 1.0)")
-    distraction_details string? @description("If distracted, what specific distraction was detected")
+    //analysis string @description("Detailed analysis of what the user is doing in the screenshot")
+    //confidence float @description("Confidence level of the analysis (0.0 to 1.0)")
+    //distraction_details string? @description("If distracted, what specific distraction was detected")
 }
 
 
